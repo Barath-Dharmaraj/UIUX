@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Food Order Confirmation</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* 1. Colorful Gradient Background */
+    body {
+      background: linear-gradient(135deg, #ff7e5f, #feb47b);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 15px;
+    }
+
+    /* 2. Main Card with Accent Header */
+    .card {
+      background: #ffffff;
+      padding: 28px;
+      width: 100%;
+      max-width: 420px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    h2 {
+      margin: 0 0 18px 0;
+      text-align: center;
+      color: #d35400;
+      font-size: 24px;
+    }
+
+    /* 3. Colorful Order Summary Box */
+    .summary {
+      background: #fff8f0;
+      border: 1.5px dashed #f39c12;
+      padding: 14px;
+      border-radius: 10px;
+      margin-bottom: 18px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .item-tag {
+      background: #ffeaa7;
+      color: #d35400;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .total-row {
+      font-weight: bold;
+      border-top: 1px solid #ffd5a5;
+      padding-top: 8px;
+      margin-top: 8px;
+      color: #d35400;
+      font-size: 16px;
+    }
+
+    /* 4. Form Inputs */
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 6px;
+      color: #333;
+    }
+
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input[type="text"]:focus, textarea:focus {
+      border-color: #ff7e5f;
+      box-shadow: 0 0 5px rgba(255, 126, 95, 0.3);
+    }
+
+    /* 5. Custom Styled Payment Options */
+    .radio-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    .radio-label {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 8px 6px;
+      border: 1.5px solid #fad390;
+      background: #fffcf7;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      font-weight: normal;
+      transition: background 0.2s;
+    }
+
+    .radio-label:hover {
+      background: #ffeaa7;
+    }
+
+    /* 6. Vibrant Submit Button */
+    button {
+      width: 100%;
+      background: linear-gradient(135deg, #e67e22, #d35400);
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 8px;
+      box-shadow: 0 4px 12px rgba(211, 84, 0, 0.3);
+      transition: transform 0.1s, opacity 0.2s;
+    }
+
+    button:hover {
+      opacity: 0.95;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    /* 7. Feedback Banners */
+    #msg {
+      margin-top: 14px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: bold;
+      display: none;
+    }
+
+    .error {
+      display: block !important;
+      background-color: #ffe5e5;
+      color: #d63031;
+      border: 1.5px solid #ff7675;
+    }
+
+    .success {
+      display: block !important;
+      background-color: #e3fcec;
+      color: #009432;
+      border: 1.5px solid #55efc4;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>🍔 Confirm Order</h2>
+
+    <!-- 1. Food Summary -->
+    <div class="summary">
+      <div class="summary-row">
+        <span><span class="item-tag">Food</span> Supreme Burger</span>
+        <span>Qty: 2</span>
+      </div>
+      <div class="summary-row total-row">
+        <span>Total Payable:</span>
+        <span>₹250</span>
+      </div>
+    </div>
+
+    <!-- 2. Customer Form Details -->
+    <div class="form-group">
+      <label for="name">Customer Name</label>
+      <input type="text" id="name" placeholder="e.g. Alex Smith">
+    </div>
+
+    <div class="form-group">
+      <label for="address">Delivery Address</label>
+      <textarea id="address" rows="2" placeholder="e.g. 123 Main Street, Apt 4B"></textarea>
+    </div>
+
+    <!-- 3. Payment Method -->
+    <div class="form-group">
+      <label>Payment Method</label>
+      <div class="radio-group">
+        <label class="radio-label">
+          <input type="radio" name="payment" value="Card" checked> Card
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="payment" value="UPI"> UPI
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="payment" value="COD"> COD
+        </label>
+      </div>
+    </div>
+
+    <!-- 4. Submit Button -->
+    <button onclick="placeOrder()">Place Order</button>
+
+    <!-- 5. Feedback Container -->
+    <div id="msg"></div>
+  </div>
+
+  <script>
+    function placeOrder() {
+      // Step 1: Read values
+      const name = document.getElementById("name").value.trim();
+      const address = document.getElementById("address").value.trim();
+      const payment = document.querySelector('input[name="payment"]:checked');
+      const msgBox = document.getElementById("msg");
+
+      // Step 2: Form validation
+      if (name === "" || address === "") {
+        msgBox.className = "error";
+        msgBox.innerText = "⚠️ Please fill in all delivery details!";
+        return;
+      }
+
+      // Step 3: Success state
+      msgBox.className = "success";
+      msgBox.innerText = `🎉 Order Placed Successfully via ${payment.value}!`;
+    }
+  </script>
+
+</body>
+</html>
