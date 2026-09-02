@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Order Confirmation - Multi Step</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    /* Container Card */
+    .order-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 420px;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    }
+
+    h2 {
+      font-size: 20px;
+      color: #0f172a;
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    /* Step 2: Summary Box */
+    .summary-box {
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #3b82f6;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+    }
+
+    .summary-box h3 {
+      font-size: 14px;
+      color: #334155;
+      margin-bottom: 8px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: #64748b;
+      margin-bottom: 4px;
+    }
+
+    .summary-row.total {
+      font-weight: bold;
+      color: #0f172a;
+      border-top: 1px dashed #cbd5e1;
+      padding-top: 6px;
+      margin-top: 6px;
+    }
+
+    /* Form Inputs */
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus {
+      border-color: #3b82f6;
+    }
+
+    /* Payment Radio Group */
+    .payment-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 4px;
+      margin-bottom: 16px;
+    }
+
+    .radio-label {
+      font-size: 13px;
+      color: #334155;
+      font-weight: normal;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+    }
+
+    /* Buttons */
+    .btn {
+      width: 100%;
+      background-color: #3b82f6;
+      color: #ffffff;
+      border: none;
+      padding: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .btn:hover {
+      background-color: #2563eb;
+    }
+
+    .btn-secondary {
+      background-color: #64748b;
+      margin-top: 8px;
+    }
+
+    .btn-secondary:hover {
+      background-color: #475569;
+    }
+
+    /* Feedback Banner */
+    .feedback {
+      margin-top: 14px;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .msg-error {
+      background-color: #fef2f2;
+      color: #dc2626;
+      border: 1px solid #fecaca;
+    }
+
+    .msg-success {
+      background-color: #f0fdf4;
+      color: #16a34a;
+      border: 1px solid #bbf7d0;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="order-card">
+    
+    <!-- PAGE 1: User Delivery Details -->
+    <div id="page1">
+      <h2>📍 Step 1: Delivery Details</h2>
+
+      <div class="form-group">
+        <label for="customerName">Full Name</label>
+        <input type="text" id="customerName" placeholder="Enter your full name">
+      </div>
+
+      <div class="form-group">
+        <label for="deliveryAddress">Delivery Address</label>
+        <textarea id="deliveryAddress" rows="3" placeholder="Enter complete address"></textarea>
+      </div>
+
+      <button type="button" class="btn" onclick="goToStep2()">Next: Payment →</button>
+      <div id="errorMsg"></div>
+    </div>
+
+    <!-- PAGE 2: Summary & Payment (Hidden initially) -->
+    <div id="page2" style="display: none;">
+      <h2>💳 Step 2: Confirm & Pay</h2>
+
+      <!-- Order & User Summary Preview -->
+      <section class="summary-box">
+        <h3>Order Summary</h3>
+        <div class="summary-row">
+          <span>Supreme Chicken Burger</span>
+          <span>Qty: 2</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total Price:</span>
+          <span>₹250</span>
+        </div>
+        <div class="summary-row" style="margin-top: 8px; border-top: 1px solid #e2e8f0; padding-top: 6px;">
+          <span id="userPreview" style="color: #334155; font-size: 13px;"></span>
+        </div>
+      </section>
+
+      <!-- Payment Method Selection -->
+      <div class="form-group">
+        <label>Select Payment Method</label>
+        <div class="payment-group">
+          <label class="radio-label">
+            <input type="radio" name="paymentMethod" value="Card" checked> Card
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="paymentMethod" value="UPI"> UPI
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="paymentMethod" value="COD"> COD
+          </label>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <button type="button" class="btn" onclick="placeFinalOrder()">Place Order</button>
+      <button type="button" class="btn btn-secondary" onclick="goToStep1()">← Back</button>
+
+      <div id="successMsg"></div>
+    </div>
+
+  </main>
+
+  <script>
+    // 1. Validate Step 1 and Navigate to Step 2
+    function goToStep2() {
+      const name = document.getElementById("customerName").value.trim();
+      const address = document.getElementById("deliveryAddress").value.trim();
+      const errorBox = document.getElementById("errorMsg");
+
+      // Validate required inputs
+      if (name === "" || address === "") {
+        errorBox.className = "feedback msg-error";
+        errorBox.innerText = "⚠️ Please fill in all delivery details!";
+        return;
+      }
+
+      // Clear error message
+      errorBox.className = "";
+      errorBox.innerText = "";
+
+      // Transfer data to Step 2 preview
+      document.getElementById("userPreview").innerHTML = `<b>Deliver to:</b> ${name} (${address})`;
+
+      // Switch pages
+      document.getElementById("page1").style.display = "none";
+      document.getElementById("page2").style.display = "block";
+    }
+
+    // 2. Navigate back to Step 1
+    function goToStep1() {
+      document.getElementById("page2").style.display = "none";
+      document.getElementById("page1").style.display = "block";
+    }
+
+    // 3. Final Submission on Step 2
+    function placeFinalOrder() {
+      const payment = document.querySelector('input[name="paymentMethod"]:checked').value;
+      const successBox = document.getElementById("successMsg");
+
+      successBox.className = "feedback msg-success";
+      successBox.innerText = `✅ Order Placed Successfully via ${payment}!`;
+    }
+  </script>
+
+</body>
+</html>
