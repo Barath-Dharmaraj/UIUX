@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Support Portal | Blue & White</title>
+    <style>
+        :root {
+            --bg-canvas: #0f172a;
+            --portal-bg: #ffffff;
+            --primary-blue: #1e40af;
+            --primary-hover: #1e3a8a;
+            --light-blue: #eff6ff;
+            --border-color: #dbeafe;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-canvas);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .portal-frame {
+            width: 400px;
+            height: 680px;
+            background: var(--portal-bg);
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #93c5fd;
+        }
+
+        .screen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            padding: 32px 24px;
+            box-sizing: border-box;
+            justify-content: space-between;
+            overflow-y: auto;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        /* Portal Header */
+        .portal-header {
+            border-bottom: 2px solid var(--light-blue);
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        .portal-header h1 {
+            font-size: 1.15rem;
+            color: var(--primary-blue);
+            margin: 0 0 4px 0;
+            font-weight: 700;
+        }
+
+        .portal-header p {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        h2 {
+            font-size: 1.05rem;
+            color: var(--primary-blue);
+            margin: 0 0 12px 0;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            box-sizing: border-box;
+            outline: none;
+            transition: all 0.2s ease;
+            background: #f8fafc;
+            color: var(--text-primary);
+        }
+
+        input:focus {
+            border-color: var(--primary-blue);
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary-blue);
+            border: 1px solid #bfdbfe;
+            padding: 11px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 8px;
+            transition: background 0.2s;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--light-blue);
+        }
+
+        /* User ID Card */
+        .id-card {
+            background: var(--light-blue);
+            color: var(--primary-blue);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: left;
+            border: 1px solid #bfdbfe;
+        }
+
+        .id-card h3 {
+            margin: 0 0 4px 0;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .id-card p {
+            margin: 0;
+            font-size: 0.78rem;
+            color: #3b82f6;
+        }
+
+        /* Navigation Links */
+        .nav-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-link-item {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            padding: 14px 16px;
+            border-radius: 8px;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            font-size: 0.88rem;
+            transition: all 0.2s;
+        }
+
+        .nav-link-item:hover {
+            border-color: var(--primary-blue);
+            background: var(--light-blue);
+        }
+
+        /* Data Cards */
+        .info-card {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--primary-blue);
+            padding: 12px 14px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .info-card h4 {
+            margin: 0 0 2px 0;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .info-card p {
+            margin: 0;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+        }
+
+        .badge-blue {
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            background: var(--light-blue);
+            color: var(--primary-blue);
+            float: right;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="portal-frame">
+
+        <!-- SCREEN 1: Login -->
+        <div id="screen1" class="screen active">
+            <div>
+                <div class="portal-header" style="margin-top: 10px;">
+                    <h1>VIT Academic Support</h1>
+                    <p>Secure Student Portal</p>
+                </div>
+                <div style="margin-top: 20px;">
+                    <div class="form-group">
+                        <label for="studentName">Student Name</label>
+                        <input type="text" id="studentName" placeholder="e.g. Barath D">
+                    </div>
+                    <div class="form-group">
+                        <label for="studentReg">Registration Number</label>
+                        <input type="text" id="studentReg" placeholder="e.g. 23MIS0142">
+                    </div>
+                </div>
+            </div>
+            <button class="btn-primary" onclick="handleLogin()">Sign In</button>
+        </div>
+
+        <!-- SCREEN 2: Dashboard -->
+        <div id="screen2" class="screen">
+            <div>
+                <div class="portal-header">
+                    <h1>Dashboard</h1>
+                    <p>Student Overview</p>
+                </div>
+
+                <div class="id-card">
+                    <h3 id="displayName">Student Name</h3>
+                    <p id="displayReg">Reg No: ---</p>
+                </div>
+
+                <div class="nav-stack">
+                    <div class="nav-link-item" onclick="switchScreen('screen3')">
+                        <span>Attendance & Assignments</span> <span style="color: var(--primary-blue);">&rarr;</span>
+                    </div>
+                    <div class="nav-link-item" onclick="switchScreen('screen4')">
+                        <span>Class Timetable</span> <span style="color: var(--primary-blue);">&rarr;</span>
+                    </div>
+                    <div class="nav-link-item" onclick="switchScreen('screen5')">
+                        <span>Academic Notifications</span> <span style="color: var(--primary-blue);">&rarr;</span>
+                    </div>
+                </div>
+            </div>
+            <button class="btn-outline" onclick="switchScreen('screen1')">Sign Out</button>
+        </div>
+
+        <!-- SCREEN 3: Attendance & Assignments -->
+        <div id="screen3" class="screen">
+            <div>
+                <div class="portal-header">
+                    <h1>Academic Status</h1>
+                    <p>Performance & Tasks</p>
+                </div>
+
+                <div class="info-card">
+                    <span class="badge-blue">92%</span>
+                    <h4>Full Stack Web Lab</h4>
+                    <p>Status: Eligible • Next session Friday</p>
+                </div>
+                <div class="info-card">
+                    <span class="badge-blue">Due Soon</span>
+                    <h4>Cloud Computing</h4>
+                    <p>Assignment Submission: Oct 28</p>
+                </div>
+            </div>
+            <button class="btn-outline" onclick="switchScreen('screen2')">Return to Dashboard</button>
+        </div>
+
+        <!-- SCREEN 4: Timetable -->
+        <div id="screen4" class="screen">
+            <div>
+                <div class="portal-header">
+                    <h1>Timetable</h1>
+                    <p>Schedule</p>
+                </div>
+
+                <div class="info-card">
+                    <span class="badge-blue">09:00 AM</span>
+                    <h4>Software Engineering</h4>
+                    <p>Slot A1 • Room TT 402</p>
+                </div>
+                <div class="info-card">
+                    <span class="badge-blue">10:30 AM</span>
+                    <h4>Cloud Infrastructure</h4>
+                    <p>Slot B1 • Room SJT 312</p>
+                </div>
+            </div>
+            <button class="btn-outline" onclick="switchScreen('screen2')">Return to Dashboard</button>
+        </div>
+
+        <!-- SCREEN 5: Notifications -->
+        <div id="screen5" class="screen">
+            <div>
+                <div class="portal-header">
+                    <h1>Notifications</h1>
+                    <p>Circulars</p>
+                </div>
+
+                <div class="info-card">
+                    <span class="badge-blue">Urgent</span>
+                    <h4>Mid-Term Examinations</h4>
+                    <p>Seating arrangements published on portal.</p>
+                </div>
+                <div class="info-card">
+                    <span class="badge-blue">Update</span>
+                    <h4>Hackathon Guidelines</h4>
+                    <p>Smart India Hackathon timeline updated.</p>
+                </div>
+            </div>
+            <button class="btn-outline" onclick="switchScreen('screen2')">Return to Dashboard</button>
+        </div>
+
+    </div>
+
+    <script>
+        function switchScreen(screenId) {
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function handleLogin() {
+            const name = document.getElementById('studentName').value.trim();
+            const reg = document.getElementById('studentReg').value.trim();
+
+            if (!name || !reg) {
+                alert("Please complete both input fields.");
+                return;
+            }
+
+            document.getElementById('displayName').innerText = name;
+            document.getElementById('displayReg').innerText = "Reg No: " + reg;
+            switchScreen('screen2');
+        }
+    </script>
+</body>
+</html>
